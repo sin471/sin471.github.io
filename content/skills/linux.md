@@ -6,4 +6,4 @@ years: 2years
 order: 2
 ---
 
-Ubuntu, WSL2, UDP通信
+Ubuntu, WSL2, UDP

@@ -6,4 +6,4 @@ years: 3years
 order: 1
 ---
 
-Modern C, CMake, gdb, gprof
+C, CMake, gdb, gprof

@@ -3,10 +3,13 @@ title: オトヨリ
 tags:
   - Hackathon
 techStack:
-  - SpringBoot
+  - HTML
+  - CSS
+  - JavaScript
+  - Java(SpringBoot)
+  - PostgreSQL
   - Gemini API
-  - Java
-  - REST API
+  - AmiVoice API
 imageUrl: /images/otoyori.jpg
 order: 1
 ---

@@ -4,7 +4,7 @@ techStack:
   - Python
   - BeautifulSoup4
   - GitHub Actions
-  - RSS
+  - connpass API
 githubUrl: https://github.com/sin471/connpass-RSS
 imageUrl: /images/connpass.png
 order: 2

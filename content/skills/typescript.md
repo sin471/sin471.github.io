@@ -6,4 +6,4 @@ years: 1year
 order: 8
 ---
 
-Next.js / Frontend basics
+React, Next.js
