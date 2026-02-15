@@ -1,8 +1,8 @@
 import { Footer } from '@/components/layout/Footer';
 import { AcademicSection } from '@/components/sections/AcademicSection';
 import { AccountLinksSection } from '@/components/sections/AccountLinksSection';
-import { ActivitiesSection } from '@/components/sections/ActivitiesSection';
 import { AchievementsSection } from '@/components/sections/AchievementsSection';
+import { ActivitiesSection } from '@/components/sections/ActivitiesSection';
 import { CareerSection } from '@/components/sections/CareerSection';
 import { CertificationsSection } from '@/components/sections/CertificationsSection';
 import { ProfileSection } from '@/components/sections/ProfileSection';

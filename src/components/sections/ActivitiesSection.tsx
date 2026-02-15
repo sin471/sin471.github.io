@@ -1,7 +1,7 @@
 'use client';
 
-import { SectionHeader } from '@/components/ui/SectionHeader';
 import { ActivityCard } from '@/components/ui/ActivityCard';
+import { SectionHeader } from '@/components/ui/SectionHeader';
 import { activities } from '@/data/activities';
 import { BookOpen } from 'lucide-react';
 

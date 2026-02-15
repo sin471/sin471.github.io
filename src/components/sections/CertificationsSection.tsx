@@ -1,8 +1,8 @@
 'use client';
 
-import { Award } from 'lucide-react';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { certifications } from '@/data/certifications';
+import { Award } from 'lucide-react';
 
 export function CertificationsSection() {
   return (
