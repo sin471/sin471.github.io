@@ -1,4 +1,4 @@
-import { defineConfig, defineCollection, s } from 'velite'
+import { defineCollection, defineConfig, s } from 'velite'
 
 // Works collection
 const works = defineCollection({
