@@ -14,7 +14,7 @@ export function SkillStackSection() {
           <SkillCard key={skill.name} skill={skill} />
         ))}
       </div>
-      <div className="mt-8 p-4 bg-slate-900/20 rounded-xl border border-slate-900 text-[10px] text-slate-500 flex gap-6 italic">
+      <div className="mt-8 p-4 bg-slate-900/20 rounded-xl border border-slate-900 text-[10px] text-slate-300 flex gap-6 italic">
         <span>★★★ :"Related Tech"も含め、基本的な文法や使い方は抑えており，成果物を一から作成できる</span>
         <span>★★ :"Related Tech"も含め、基本的な文法や使い方はある程度抑えている</span>
         <span>★ : 少し触ったことがある</span>
