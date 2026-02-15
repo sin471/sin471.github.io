@@ -6,7 +6,8 @@ techStack:
   - HTML
   - CSS
   - JavaScript
-  - Java(SpringBoot)
+  - Java
+  - SpringBoot
   - PostgreSQL
   - Gemini API
   - AmiVoice API

@@ -6,4 +6,4 @@ years: 2years
 order: 3
 ---
 
-BeautifulSoup4, Streamlit
+Transformers, scikit-learn, BeautifulSoup4, Streamlit
