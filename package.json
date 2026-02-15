@@ -3,12 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "node scripts/generate-data.js && next dev",
+    "build": "node scripts/generate-data.js && next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "generate": "node scripts/generate-data.js"
   },
   "dependencies": {
+    "gray-matter": "^4.0.3",
     "lucide-react": "^0.564.0",
     "next": "16.1.6",
     "react": "19.2.3",
