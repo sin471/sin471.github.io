@@ -55,7 +55,6 @@ const skills = defineCollection({
       icon: s.string(),
       level: s.number().refine((val) => val >= 1 && val <= 3),
       years: s.string(),
-      order: s.number(),
       body: s.raw(),
     })
     .transform((data) => ({
