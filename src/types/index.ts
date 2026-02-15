@@ -14,20 +14,38 @@ export interface AccountLink {
 
 export interface Work {
   title: string;
-  description: string;
+  description: string[];
+  techStack: string[];
   tags?: string[];
+  githubUrl?: string;
+  imageUrl?: string;
 }
 
 export interface Activity {
   title: string;
-  subtitle: string;
-  description: string;
+  subtitle?: string;
+  description: string | string[];
   highlight?: boolean;
   highlightColor?: string;
+  imageUrl?: string;
+  externalUrl?: string;
 }
 
 export interface AcademicInfo {
   period: string;
   institution: string;
   description: string;
+}
+
+export interface CareerInfo {
+  period: string;
+  institution: string;
+  description: string;
+}
+
+export interface Achievement {
+  title: string;
+  description: string;
+  date?: string;
+  url?: string;
 }

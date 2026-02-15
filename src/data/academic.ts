@@ -2,8 +2,13 @@ import { AcademicInfo } from '@/types';
 
 export const academicHistory: AcademicInfo[] = [
   {
-    period: "2023 - PRESENT",
-    institution: "愛知県立大学 情報科学部",
-    description: "研究・関心分野：現代制御理論、信号処理、音響物理学、日本語学。",
+    period: "RESEARCH",
+    institution: "研究分野",
+    description: "自然言語処理：とくにSLM（小規模言語モデル）・言語獲得・計算言語学",
+  },
+  {
+    period: "INTEREST",
+    institution: "関心分野",
+    description: "言語学全般、音声学、音声信号処理",
   },
 ];

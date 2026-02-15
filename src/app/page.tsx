@@ -2,6 +2,9 @@ import { Footer } from '@/components/layout/Footer';
 import { AcademicSection } from '@/components/sections/AcademicSection';
 import { AccountLinksSection } from '@/components/sections/AccountLinksSection';
 import { ActivitiesSection } from '@/components/sections/ActivitiesSection';
+import { AchievementsSection } from '@/components/sections/AchievementsSection';
+import { CareerSection } from '@/components/sections/CareerSection';
+import { CertificationsSection } from '@/components/sections/CertificationsSection';
 import { ProfileSection } from '@/components/sections/ProfileSection';
 import { SkillStackSection } from '@/components/sections/SkillStackSection';
 import { WorksSection } from '@/components/sections/WorksSection';
@@ -16,6 +19,9 @@ export default function Home() {
         <WorksSection />
         <ActivitiesSection />
         <AcademicSection />
+        <CareerSection />
+        <AchievementsSection />
+        <CertificationsSection />
         <Footer />
       </div>
     </main>

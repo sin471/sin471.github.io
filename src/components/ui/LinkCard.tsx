@@ -1,17 +1,16 @@
 'use client';
 
 import { AccountLink } from '@/types';
-import { Code2, Github, Trophy, Twitter } from 'lucide-react';
 
 interface LinkCardProps {
   link: AccountLink;
 }
 
-const iconMap: Record<string, React.ReactNode> = {
-  github: <Github size={16} />,
-  trophy: <Trophy size={16} />,
-  code2: <Code2 size={16} />,
-  twitter: <Twitter size={16} />,
+const iconMap: Record<string, string> = {
+  github: 'https://cdn.simpleicons.org/github/white',
+  x: 'https://cdn.simpleicons.org/x/white',
+  qiita: 'https://cdn.simpleicons.org/qiita/55C500',
+  atcoder: 'https://img.atcoder.jp/assets/atcoder.png',
 };
 
 export function LinkCard({ link }: LinkCardProps) {
@@ -22,7 +21,9 @@ export function LinkCard({ link }: LinkCardProps) {
       rel="noopener noreferrer" 
       className="flex items-center justify-center gap-3 bg-slate-900/50 border border-slate-800 p-4 rounded-xl hover:border-blue-500/50 hover:bg-slate-900 transition-all"
     >
-      <span className="text-slate-400">{iconMap[link.icon]}</span>
+      <span className="text-slate-400 w-4 h-4 flex items-center justify-center">
+        <img src={iconMap[link.icon]} alt={link.name} className="w-4 h-4 object-contain" />
+      </span>
       <span className="font-bold">{link.name}</span>
     </a>
   );

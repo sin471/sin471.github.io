@@ -17,7 +17,7 @@ export function SectionHeader({
     blue: 'text-blue-400',
     green: 'text-green-400',
     yellow: 'text-yellow-400',
-    slate: 'text-slate-500',
+    slate: 'text-slate-300',
     indigo: 'text-indigo-400',
   };
 

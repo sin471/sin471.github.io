@@ -23,7 +23,7 @@ export function SkillCard({ skill }: SkillCardProps) {
       <div className="grow space-y-1.5 min-w-0">
         <div className="flex justify-between items-end">
           <h4 className="font-bold text-white text-lg leading-none">{skill.name}</h4>
-          <span className="text-[10px] text-slate-500 font-mono tracking-tighter">
+          <span className="text-[10px] text-slate-300 font-mono tracking-tighter">
             {skill.years} Experience
           </span>
         </div>

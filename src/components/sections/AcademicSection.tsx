@@ -7,14 +7,15 @@ import { GraduationCap } from 'lucide-react';
 export function AcademicSection() {
   return (
     <section>
-      <SectionHeader icon={<GraduationCap size={14} />} title="Academic & Career" />
-      <div className="border-l border-slate-800 ml-2 space-y-12 pl-8">
+      <SectionHeader icon={<GraduationCap size={14} />} title="Academic" color="yellow" />
+      <div className="space-y-6">
         {academicHistory.map((item) => (
-          <div key={item.period} className="relative">
-            <div className="absolute -left-[37px] top-1 w-2.5 h-2.5 rounded-full bg-blue-500 shadow-lg shadow-blue-500/50"></div>
-            <p className="text-[10px] text-slate-500 font-mono mb-1">{item.period}</p>
-            <h3 className="text-white font-bold text-sm leading-none">{item.institution}</h3>
-            <p className="text-xs text-slate-500 mt-3 leading-relaxed">{item.description}</p>
+          <div key={item.period} className="bg-slate-900/40 border border-slate-800 rounded-2xl p-6">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-2 h-2 rounded-full bg-yellow-500 shadow-lg shadow-yellow-500/50"></div>
+              <h3 className="text-white font-bold text-lg">{item.institution}</h3>
+            </div>
+            <p className="text-sm text-slate-300 leading-relaxed pl-5">{item.description}</p>
           </div>
         ))}
       </div>

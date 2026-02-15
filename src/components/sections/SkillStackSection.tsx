@@ -15,9 +15,9 @@ export function SkillStackSection() {
         ))}
       </div>
       <div className="mt-8 p-4 bg-slate-900/20 rounded-xl border border-slate-900 text-[10px] text-slate-500 flex gap-6 italic">
-        <span>★★★ : 指揮/一からの構築が可能</span>
-        <span>★★ : 実務・チーム開発レベル</span>
-        <span>★ : 基本理解/個人開発レベル</span>
+        <span>★★★ :"Related Tech"も含め、基本的な文法や使い方は抑えており，成果物を一から作成できる</span>
+        <span>★★ :"Related Tech"も含め、基本的な文法や使い方はある程度抑えている</span>
+        <span>★ : 少し触ったことがある</span>
       </div>
     </section>
   );
