@@ -1,0 +1,83 @@
+---
+interface Props {
+  pathname: string
+}
+
+const { pathname } = Astro.props
+
+const navLinks = [
+  { href: '/about',    label: 'About'    },
+  { href: '/research', label: 'Research' },
+  { href: '/skills',   label: 'Skills'   },
+  { href: '/works',    label: 'Works'    },
+]
+
+function isActive(href: string): boolean {
+  return pathname === href || pathname === href + '/'
+}
+---
+
+<!-- DaisyUI drawer wrapper (mobile nav) -->
+<div class="drawer">
+  <input id="nav-drawer" type="checkbox" class="drawer-toggle" />
+
+  <div class="drawer-content flex flex-col">
+    <!-- shimmer line -->
+    <div class="water-shimmer-bar w-full" />
+
+    <!-- navbar -->
+    <header class="navbar sticky top-0 z-50 bg-base-100/70 backdrop-blur-md border-b border-base-300/50 px-4">
+      <!-- brand -->
+      <div class="navbar-start">
+        <a href="/" class="btn btn-ghost btn-lg font-mono font-bold tracking-widest text-base-content">
+          sin471
+        </a>
+      </div>
+
+      <!-- desktop nav -->
+      <nav class="navbar-end hidden md:flex gap-1">
+        {navLinks.map(({ href, label }) => (
+          <a
+            href={href}
+            class:list={[
+              'btn btn-ghost btn-lg font-mono',
+              isActive(href) && 'btn-active font-bold',
+            ]}
+          >
+            {label}
+          </a>
+        ))}
+      </nav>
+
+      <!-- mobile hamburger -->
+      <div class="navbar-end md:hidden">
+        <label for="nav-drawer" class="btn btn-ghost btn-square" aria-label="メニューを開く">
+          <span class="material-symbols-outlined">menu</span>
+        </label>
+      </div>
+    </header>
+
+    <slot />
+  </div>
+
+  <!-- mobile drawer side -->
+  <div class="drawer-side z-[100]">
+    <label for="nav-drawer" aria-label="メニューを閉じる" class="drawer-overlay"></label>
+    <div class="menu bg-base-100 min-h-full w-64 p-6 flex flex-col gap-2 font-mono">
+      <a href="/" class="btn btn-ghost justify-start font-bold tracking-widest mb-4">
+        sin471
+      </a>
+      {navLinks.map(({ href, label }) => (
+        <a
+          href={href}
+          class:list={[
+            'btn btn-ghost justify-start',
+            isActive(href) && 'btn-active font-bold',
+          ]}
+        >
+          {label}
+        </a>
+      ))}
+    </div>
+  </div>
+</div>

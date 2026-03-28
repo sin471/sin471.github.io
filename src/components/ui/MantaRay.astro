@@ -1,0 +1,173 @@
+---
+---
+
+<!--
+  MantaRay: JS で自律遊泳
+  - heading（進行方向）がサイン波でゆっくり変化 → 自然なS字軌道
+  - swimmer div が position + heading rotation を担当
+  - svg 要素が体のうねり rotation を担当（wing-spread/tail-wave と独立）
+  - 画面端に達したら反対側から再入場
+-->
+<div
+  class="fixed inset-0 z-[5] pointer-events-none overflow-hidden"
+  aria-hidden="true"
+>
+  <div
+    id="manta-ray"
+    style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); will-change: transform;"
+  >
+    <svg
+      id="manta-svg"
+      viewBox="0 0 500 440"
+      xmlns="http://www.w3.org/2000/svg"
+      class="w-[72vw] md:w-[58vw] lg:w-[48vw] max-w-[680px] min-w-[280px] text-primary"
+      fill="none"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      style="transform-origin: center; will-change: transform; pointer-events: bounding-box; cursor: pointer;"
+      aria-hidden="true"
+    >
+      <!-- ボディ外形 -->
+      <path
+        stroke-width="5"
+        stroke-opacity="0.88"
+        style="
+          transform-box: fill-box;
+          transform-origin: 50% 38%;
+          animation: wing-spread 4s ease-in-out infinite;
+        "
+        d="
+          M 250,14
+          C 210,10  52,108  18,191
+          C 12,208  16,226  32,238
+          C 46,248  66,256  78,262
+          C 92,270  112,292 134,308
+          C 158,318 198,322 238,322
+          C 244,328 256,328 262,322
+          C 302,322 342,318 366,308
+          C 388,292 408,270 422,262
+          C 434,256 454,248 468,238
+          C 484,226 488,208 482,191
+          C 448,108 290,10  250,14
+          Z
+        "
+      />
+
+      <!-- 左目 -->
+      <circle cx="210" cy="68" r="8" fill="currentColor" stroke="none" opacity="0.85" />
+      <!-- 右目 -->
+      <circle cx="290" cy="68" r="8" fill="currentColor" stroke="none" opacity="0.85" />
+
+      <!-- 尾 -->
+      <path
+        stroke-width="4"
+        stroke-opacity="0.82"
+        style="
+          transform-box: fill-box;
+          transform-origin: 50% 3%;
+          animation: tail-wave 3.5s ease-in-out infinite;
+        "
+        d="
+          M 250,324
+          C 256,344  272,360  266,378
+          C 260,394  244,404  246,420
+          C 248,430  260,434  268,428
+        "
+      />
+    </svg>
+  </div>
+</div>
+
+<script>
+  const swimmer = document.getElementById('manta-ray') as HTMLElement | null
+  const mantaSvg = document.getElementById('manta-svg') as SVGElement | null
+
+  if (
+    swimmer &&
+    mantaSvg &&
+    !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  ) {
+    // ── 初期状態 ──────────────────────────────
+    // 中心相対座標（px）
+    let x = 0
+    let y = 0
+    // 進行方向（ラジアン、0=右）
+    let heading = Math.random() * Math.PI * 2
+    let frame = 0
+
+    // ── パラメータ ────────────────────────────
+    const SPEED        = 1.0   // px/frame
+    const SWAY_FREQ    = 0.002 // heading サイン波の周波数
+    const SWAY_AMP     = 0.005 // heading 変化量/frame
+    const BODY_AMP_DEG = 2.0   // 体うねりの最大角度
+    const WING_PERIOD  = 0.025 // wing_spread と同周期（2.6s @ 65fps）
+
+    // プルプル状態
+    let shiverFrames = 0
+    let shiverElapsed = 0  // クリック時点からの経過フレーム（位相を0から始めるため）
+    const SHIVER_DURATION = 90  // フレーム数
+    const SHIVER_AMP_DEG  = 45   // 最大振れ角
+    const SHIVER_FREQ     = 0.015 // 振動周波数
+
+    const hitTest = (cx: number, cy: number) => {
+      const r = swimmer.getBoundingClientRect()
+      return cx >= r.left && cx <= r.right && cy >= r.top && cy <= r.bottom
+    }
+    const triggerShiver = () => { if (shiverFrames === 0) shiverElapsed = 0; shiverFrames = SHIVER_DURATION }
+    document.addEventListener('click', (e) => {
+      if (hitTest(e.clientX, e.clientY)) triggerShiver()
+    })
+    document.addEventListener('touchstart', (e) => {
+      const t = e.touches[0]
+      if (hitTest(t.clientX, t.clientY)) triggerShiver()
+    }, { passive: true })
+
+    function tick() {
+      frame++
+
+      // 進行方向をサイン波でゆっくり変化（S字軌道）
+      heading += Math.sin(frame * SWAY_FREQ) * SWAY_AMP
+
+      // 前進
+      x += Math.cos(heading) * SPEED
+      y += Math.sin(heading) * SPEED
+
+      // 画面外に出たらランダムな別の辺から再入場
+      const hw = window.innerWidth  / 2 + 350
+      const hh = window.innerHeight / 2 + 350
+      if (x > hw || x < -hw || y > hh || y < -hh) {
+        const edge = Math.floor(Math.random() * 4)
+        if (edge === 0) { x = -hw; y = (Math.random() * 2 - 1) * hh; heading =  Math.random() * Math.PI / 2 - Math.PI / 4 }        // 左辺
+        else if (edge === 1) { x =  hw; y = (Math.random() * 2 - 1) * hh; heading = Math.PI + Math.random() * Math.PI / 2 - Math.PI / 4 } // 右辺
+        else if (edge === 2) { y = -hh; x = (Math.random() * 2 - 1) * hw; heading =  Math.PI / 2 + Math.random() * Math.PI / 2 - Math.PI / 4 } // 上辺
+        else                 { y =  hh; x = (Math.random() * 2 - 1) * hw; heading = -Math.PI / 2 + Math.random() * Math.PI / 2 - Math.PI / 4 } // 下辺
+      }
+
+      // SVG の頭は上（-Y 方向）なので heading + 90° でノーズが進行方向を向く
+      const headDeg = heading * (180 / Math.PI) + 90
+
+      // 体のうねり（プルプル中は高速・大振幅）
+      let swayDeg: number
+      if (shiverFrames > 0) {
+        const t = shiverFrames / SHIVER_DURATION
+        swayDeg = Math.sin(shiverElapsed * SHIVER_FREQ * Math.PI * 2) * SHIVER_AMP_DEG * t
+        shiverFrames--
+        shiverElapsed++
+      } else {
+        swayDeg = Math.sin(frame * WING_PERIOD * Math.PI * 2) * BODY_AMP_DEG
+      }
+
+      // swimmer: 位置 + 向き
+      swimmer.style.transform =
+        `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) rotate(${headDeg}deg)`
+
+      // svg: 体うねり（heading rotation の内側で適用）
+      mantaSvg.style.transform = `rotate(${swayDeg}deg)`
+
+      requestAnimationFrame(tick)
+    }
+
+    requestAnimationFrame(tick)
+  }
+</script>

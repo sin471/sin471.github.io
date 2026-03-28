@@ -1,0 +1,82 @@
+---
+// ビルド時に泡の設定を生成（静的HTML）
+const bubbles = Array.from({ length: 20 }, (_, i) => {
+  const duration = 6 + Math.random() * 6   // 6s ~ 12s
+  const delay    = Math.random() * 8        // 0s ~ 8s
+  const drift    = (Math.random() - 0.5) * 60  // -30px ~ +30px
+  const left     = 2 + Math.random() * 96  // 2% ~ 98%
+  const size     = 8 + Math.random() * 32  // 8px ~ 40px
+  return { duration, delay, drift, left, size, id: i }
+})
+---
+
+<div
+  class="fixed inset-0 pointer-events-none z-0 overflow-hidden"
+  aria-hidden="true"
+>
+  {bubbles.map((b) => (
+    <div
+      class="bubble"
+      data-base-duration={`${b.duration.toFixed(1)}s`}
+      style={[
+        `left: ${b.left.toFixed(1)}%`,
+        `width: ${b.size.toFixed(1)}px`,
+        `height: ${b.size.toFixed(1)}px`,
+        `--bubble-duration: ${b.duration.toFixed(1)}s`,
+        `--bubble-delay: ${b.delay.toFixed(1)}s`,
+        `--bubble-drift: ${b.drift.toFixed(1)}px`,
+      ].join('; ')}
+    />
+  ))}
+</div>
+
+<script>
+  import { createShakeController } from '@/utils/shake'
+  import { restoreBaseDurations } from '@/utils/bubbles'
+
+  const SHAKE_THRESHOLD = 15
+  const FAST_DURATION = '2s'
+  const RECOVERY_MS = 2000
+  const DEBOUNCE_MS = 500
+
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const getBubbles = (): HTMLElement[] =>
+      Array.from(document.querySelectorAll<HTMLElement>('.bubble'))
+
+    const controller = createShakeController(getBubbles, {
+      threshold: SHAKE_THRESHOLD,
+      fastDuration: FAST_DURATION,
+      recoveryMs: RECOVERY_MS,
+      debounceMs: DEBOUNCE_MS,
+    })
+
+    async function initMotion() {
+      if (typeof DeviceMotionEvent === 'undefined') return
+
+      const handler = (e: DeviceMotionEvent) => {
+        const a = e.accelerationIncludingGravity
+        if (!a) return
+        controller.onMotion({ x: a.x ?? 0, y: a.y ?? 0, z: a.z ?? 0 })
+      }
+
+      // iOS 13+ requires permission
+      if (typeof (DeviceMotionEvent as unknown as { requestPermission?: () => Promise<string> }).requestPermission === 'function') {
+        document.addEventListener('click', async () => {
+          try {
+            const requestPermission = (DeviceMotionEvent as unknown as { requestPermission: () => Promise<string> }).requestPermission
+            const perm = await requestPermission()
+            if (perm === 'granted') {
+              window.addEventListener('devicemotion', handler)
+            }
+          } catch {
+            // Permission denied or unavailable — degrade silently
+          }
+        }, { once: true })
+      } else {
+        window.addEventListener('devicemotion', handler)
+      }
+    }
+
+    initMotion()
+  }
+</script>

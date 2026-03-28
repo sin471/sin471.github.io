@@ -1,30 +1,44 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import ProfileSection from '@/components/sections/ProfileSection.astro';
-import AccountLinksSection from '@/components/sections/AccountLinksSection.astro';
-import SkillStackSection from '@/components/sections/SkillStackSection.astro';
-import WorksSection from '@/components/sections/WorksSection.astro';
-import ActivitiesSection from '@/components/sections/ActivitiesSection.astro';
-import AcademicSection from '@/components/sections/AcademicSection.astro';
-import CareerSection from '@/components/sections/CareerSection.astro';
-import AchievementsSection from '@/components/sections/AchievementsSection.astro';
-import CertificationsSection from '@/components/sections/CertificationsSection.astro';
-import Footer from '@/components/layout/Footer.astro';
+import MantaRay from '@/components/ui/MantaRay.astro';
+import LinkCard from '@/components/ui/LinkCard.astro';
+import { accountLinks } from '@/data/accounts';
 ---
 
+<style is:global>
+  body { overflow: hidden; }
+</style>
+
 <Layout>
-  <main class="p-6 md:p-20">
-    <div class="max-w-5xl mx-auto space-y-32">
-      <ProfileSection />
-      <AccountLinksSection />
-      <SkillStackSection />
-      <WorksSection />
-      <ActivitiesSection />
-      <AcademicSection />
-      <CareerSection />
-      <AchievementsSection />
-      <CertificationsSection />
-      <Footer />
+  <!-- エイは fixed で画面全体を漂う -->
+  <MantaRay />
+
+  <!-- テキストとリンクは画面下部に固定（エイの上） -->
+  <main class="relative z-10 flex flex-col items-center justify-end h-[calc(100vh-4rem)] pb-16 gap-8 px-6 overflow-hidden">
+    <div class="text-center space-y-1">
+      <h1 class="text-4xl md:text-5xl font-bold text-base-content tracking-tighter">
+        sin471
+      </h1>
+      <p class="text-base md:text-lg font-bold uppercase tracking-wider text-base-content/60">
+        舘 健太朗 / Kentaro Tachi
+      </p>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm w-full max-w-xl">
+      {accountLinks.map((link) => (
+        <LinkCard link={link} />
+      ))}
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm w-full max-w-xl">
+      {[
+        { label: 'About',    href: '/about'    },
+        { label: 'Research', href: '/research' },
+        { label: 'Skills',   href: '/skills'   },
+        { label: 'Works',    href: '/works'    },
+      ].map(({ label, href }) => (
+        <a href={href} class="btn btn-outline font-bold justify-center">{label}</a>
+      ))}
     </div>
   </main>
 </Layout>

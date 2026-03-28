@@ -1,5 +1,7 @@
 ---
 import '../styles/global.css';
+import Header from '@/components/layout/Header.astro';
+import BubbleBackground from '@/components/layout/BubbleBackground.astro';
 
 interface Props {
   title?: string;
@@ -10,6 +12,8 @@ const {
   title = "sin471's portfolio",
   description = "A portfolio website about sin471.",
 } = Astro.props;
+
+const pathname = Astro.url.pathname;
 ---
 
 <!doctype html>
@@ -27,11 +31,16 @@ const {
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&family=Material+Symbols+Outlined&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&family=Material+Symbols+Outlined&display=swap"
       rel="stylesheet"
     />
   </head>
-  <body class="min-h-screen bg-base-200 text-base-content font-mono antialiased selection:bg-primary">
-    <slot />
+  <body class="min-h-screen bg-base-200 text-base-content font-mono antialiased selection:bg-primary overflow-x-hidden">
+    <BubbleBackground />
+    <Header pathname={pathname}>
+      <div class="relative z-10">
+        <slot />
+      </div>
+    </Header>
   </body>
 </html>
