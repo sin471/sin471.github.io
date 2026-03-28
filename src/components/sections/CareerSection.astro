@@ -5,14 +5,14 @@ import { careerHistory } from '@/data/career';
 
 <section>
   <SectionHeader icon="work" title="Career" color="indigo" />
-  <div class="border-l border-slate-800 ml-2 space-y-12 pl-8">
+  <div class="border-l-2 border-base-300 ml-2 space-y-10 pl-8">
     {careerHistory.map((item) => (
       <div class="relative">
-        <div class="absolute -left-[37px] top-1 w-2.5 h-2.5 rounded-full bg-indigo-500 shadow-lg shadow-indigo-500/50"></div>
-        <p class="text-[10px] text-slate-400 font-mono mb-1">{item.period}</p>
-        <h3 class="text-white font-bold text-sm leading-none">{item.institution}</h3>
+        <div class="absolute -left-[37px] top-1 w-2.5 h-2.5 rounded-full bg-base-content/25 border-2 border-base-100"></div>
+        <p class="text-[10px] text-base-content font-mono mb-1 uppercase tracking-wider">{item.period}</p>
+        <h3 class="font-bold text-base-content">{item.institution}</h3>
         {item.description && (
-          <p class="text-xs text-slate-400 mt-3 leading-relaxed">{item.description}</p>
+          <p class="text-base text-base-content mt-1 leading-relaxed">{item.description}</p>
         )}
       </div>
     ))}

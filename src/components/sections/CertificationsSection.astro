@@ -5,12 +5,14 @@ import { certifications } from '@/data/certifications';
 
 <section>
   <SectionHeader icon="emoji_events" title="Certifications" />
-  <div class="space-y-2">
-    {certifications.map((cert) => (
-      <div class="flex items-start gap-3 text-sm text-slate-300">
-        <span class="text-blue-400 mt-1">•</span>
-        <span>{cert.name}</span>
-      </div>
-    ))}
+  <div class="card bg-base-100 border border-base-300 shadow-sm">
+    <div class="card-body py-4 gap-2">
+      {certifications.map((cert) => (
+        <div class="flex items-start gap-3 text-base text-base-content">
+          <span class="text-baseline mt-0.5">•</span>
+          <span>{cert.name}</span>
+        </div>
+      ))}
+    </div>
   </div>
 </section>

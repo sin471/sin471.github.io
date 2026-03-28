@@ -3,7 +3,7 @@ title: AtCoder Rating
 subtitle: ""
 highlight: true
 highlightColor: green
-imageUrl: /images/atcoder.png
+imageUrl: /images/atcoder-black.png
 externalUrl: https://atcoder.jp/users/sin471
 order: 2
 ---

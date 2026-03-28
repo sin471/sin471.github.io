@@ -7,21 +7,16 @@ interface Props {
 const { link } = Astro.props;
 
 const iconMap: Record<string, string> = {
-  github: 'https://cdn.simpleicons.org/github/white',
-  x: 'https://cdn.simpleicons.org/x/white',
+  github: 'https://cdn.simpleicons.org/github/374151',
+  x: 'https://cdn.simpleicons.org/x/374151',
   qiita: 'https://cdn.simpleicons.org/qiita/55C500',
-  atcoder: 'https://img.atcoder.jp/assets/atcoder.png',
+  atcoder: 'https://img.atcoder.jp/assets/atcoder-black.png',
+  'atcoder-black': '/images/atcoder-black.png',
 };
 ---
 
-<a
-  href={link.url}
-  target="_blank"
-  rel="noopener noreferrer"
-  class="flex items-center justify-center gap-3 bg-slate-900/50 border border-slate-800 p-4 rounded-xl hover:border-blue-500/50 hover:bg-slate-900 transition-all"
->
-  <span class="text-slate-400 w-4 h-4 flex items-center justify-center">
-    <img src={iconMap[link.icon]} alt={link.name} class="w-4 h-4 object-contain" />
-  </span>
-  <span class="font-bold">{link.name}</span>
+<a href={link.url} target="_blank" rel="noopener noreferrer"
+  class="btn btn-outline gap-2 font-bold justify-center">
+  <img src={iconMap[link.icon]} alt={link.name} class="w-4 h-4 object-contain" />
+  {link.name}
 </a>

@@ -11,5 +11,5 @@ accounts:
     icon: qiita
   - name: AtCoder
     url: https://atcoder.jp/users/sin471
-    icon: atcoder
+    icon: atcoder-black
 ---
