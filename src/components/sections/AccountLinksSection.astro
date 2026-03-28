@@ -1,0 +1,14 @@
+---
+import SectionHeader from '@/components/ui/SectionHeader.astro';
+import LinkCard from '@/components/ui/LinkCard.astro';
+import { accountLinks } from '@/data/accounts';
+---
+
+<section>
+  <SectionHeader icon="language" title="Account Links" />
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
+    {accountLinks.map((link) => (
+      <LinkCard link={link} />
+    ))}
+  </div>
+</section>

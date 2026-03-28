@@ -1,0 +1,16 @@
+---
+import SectionHeader from '@/components/ui/SectionHeader.astro';
+import { certifications } from '@/data/certifications';
+---
+
+<section>
+  <SectionHeader icon="emoji_events" title="Certifications" />
+  <div class="space-y-2">
+    {certifications.map((cert) => (
+      <div class="flex items-start gap-3 text-sm text-slate-300">
+        <span class="text-blue-400 mt-1">•</span>
+        <span>{cert.name}</span>
+      </div>
+    ))}
+  </div>
+</section>

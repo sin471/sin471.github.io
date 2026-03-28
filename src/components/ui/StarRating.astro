@@ -1,0 +1,12 @@
+---
+interface Props {
+  level: 1 | 2 | 3;
+}
+const { level } = Astro.props;
+const filled = Math.min(3, Math.floor(level));
+const empty = 3 - filled;
+---
+
+<span class="text-yellow-500 tracking-wider">
+  {"★".repeat(filled)}<span class="opacity-40">{"☆".repeat(empty)}</span>
+</span>

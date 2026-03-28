@@ -1,0 +1,19 @@
+---
+import SectionHeader from '@/components/ui/SectionHeader.astro';
+import SkillCard from '@/components/ui/SkillCard.astro';
+import { skillStack } from '@/data/skills';
+---
+
+<section>
+  <SectionHeader icon="layers" title="Technical Skill Stack" />
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    {skillStack.map((skill) => (
+      <SkillCard skill={skill} />
+    ))}
+  </div>
+  <div class="mt-8 p-4 bg-slate-900/20 rounded-xl border border-slate-900 text-[10px] text-slate-300 flex gap-6 italic">
+    <span>★★★ :"Related Tech"も含め、基本的な文法や使い方は抑えており，成果物を一から作成できる</span>
+    <span>★★ :"Related Tech"も含め、基本的な文法や使い方はある程度抑えている</span>
+    <span>★ : 少し触ったことがある</span>
+  </div>
+</section>

@@ -1,0 +1,65 @@
+---
+import type { Activity } from '@/types';
+
+interface Props {
+  activity: Activity;
+}
+const { activity } = Astro.props;
+const isAtCoder = activity.title === "AtCoder Rating";
+---
+
+<div class="bg-slate-900/40 border border-slate-800 rounded-2xl overflow-hidden hover:border-green-500/30 hover:shadow-lg hover:shadow-green-500/10 transition-all">
+  {activity.imageUrl && (
+    <div class="w-full h-48 bg-slate-800/50 overflow-hidden">
+      <img
+        src={activity.imageUrl}
+        alt={activity.title}
+        class="w-full h-full object-cover"
+      />
+    </div>
+  )}
+
+  <div class="p-6">
+    <div class="flex items-start justify-between mb-2">
+      <h3 class="font-bold text-white text-lg">{activity.title}</h3>
+      {activity.externalUrl && (
+        <a
+          href={activity.externalUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="flex items-center gap-1.5 text-xs text-slate-300 hover:text-green-400 transition-colors shrink-0"
+        >
+          <span class="material-symbols-outlined text-sm leading-none">open_in_new</span>
+          <span class="hidden sm:inline">Visit</span>
+        </a>
+      )}
+    </div>
+
+    {isAtCoder ? (
+      <div class="mb-3">
+        <a href="https://atcoder.jp/users/sin471" target="_blank" rel="noopener noreferrer" title="sin471">
+          <img
+            src="https://img.shields.io/endpoint?url=https%3A%2F%2Fatcoder-badges.now.sh%2Fapi%2Fatcoder%2Fjson%2Fsin471"
+            alt="AtCoder Rating"
+            class="h-5"
+          />
+        </a>
+      </div>
+    ) : activity.subtitle ? (
+      <p class="text-sm text-slate-300 mb-3">{activity.subtitle}</p>
+    ) : null}
+
+    {Array.isArray(activity.description) ? (
+      <ul class="space-y-2 text-sm text-slate-300">
+        {activity.description.map((item) => (
+          <li class="flex items-start gap-2">
+            <span class="text-green-400 mt-1">•</span>
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p class="text-sm text-slate-300">{activity.description}</p>
+    )}
+  </div>
+</div>

@@ -1,0 +1,14 @@
+---
+import SectionHeader from '@/components/ui/SectionHeader.astro';
+import WorkCard from '@/components/ui/WorkCard.astro';
+import { works } from '@/data/works';
+---
+
+<section>
+  <SectionHeader icon="code" title="Works / Projects" color="blue" border />
+  <div class="grid md:grid-cols-2 gap-6">
+    {works.map((work) => (
+      <WorkCard work={work} />
+    ))}
+  </div>
+</section>

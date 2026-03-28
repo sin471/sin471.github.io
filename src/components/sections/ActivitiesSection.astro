@@ -1,0 +1,14 @@
+---
+import SectionHeader from '@/components/ui/SectionHeader.astro';
+import ActivityCard from '@/components/ui/ActivityCard.astro';
+import { activities } from '@/data/activities';
+---
+
+<section>
+  <SectionHeader icon="menu_book" title="Activities" color="green" border />
+  <div class="grid md:grid-cols-2 gap-6">
+    {activities.map((activity) => (
+      <ActivityCard activity={activity} />
+    ))}
+  </div>
+</section>
