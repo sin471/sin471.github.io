@@ -6,7 +6,7 @@ import { accountLinks } from '@/data/accounts';
 ---
 
 <style is:global>
-  body { overflow: hidden; }
+  html { overflow: hidden; height: 100dvh; }
 </style>
 
 <Layout>
@@ -14,7 +14,7 @@ import { accountLinks } from '@/data/accounts';
   <MantaRay />
 
   <!-- テキストとリンクは画面下部に固定（エイの上） -->
-  <main class="relative z-10 flex flex-col items-center justify-end h-[calc(100vh-4rem)] pb-8 md:pb-16 gap-4 md:gap-8 px-6 overflow-hidden">
+  <main class="relative z-10 flex flex-col items-center justify-end h-[calc(100dvh-4rem)] pb-8 md:pb-16 gap-4 md:gap-8 px-6 overflow-hidden">
     <div class="text-center space-y-1">
       <h1 class="text-4xl md:text-5xl font-bold text-base-content tracking-tighter">
         sin471

@@ -45,13 +45,13 @@
    ============================================= */
 @keyframes bubble-rise {
   0% {
-    transform: translateY(100vh) translateX(0px) scale(0.8);
+    transform: translateY(0) translateX(0px) scale(0.8);
     opacity: 0;
   }
   10% { opacity: 0.6; }
   90% { opacity: 0.4; }
   100% {
-    transform: translateY(-120px) translateX(var(--bubble-drift, 20px)) scale(1);
+    transform: translateY(-110vh) translateX(var(--bubble-drift, 20px)) scale(1);
     opacity: 0;
   }
 }
@@ -66,8 +66,8 @@
   position: fixed;
   bottom: -60px;
   border-radius: 50%;
-  border: 1px solid oklch(82% 0.111 230.318 / 0.35);
-  background: oklch(98% 0.003 247.858 / 0.15);
+  border: 1.5px solid oklch(72% 0.111 230.318 / 0.55);
+  background: oklch(92% 0.02 230 / 0.25);
   pointer-events: none;
   animation:
     bubble-rise var(--bubble-duration, 8s) var(--bubble-delay, 0s) ease-in infinite,
