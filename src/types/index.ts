@@ -49,3 +49,11 @@ export interface Achievement {
   date?: string;
   url?: string;
 }
+
+export interface Scholarship {
+  title: string;
+  period: string;
+  amount?: string;
+  description: string;
+  url?: string;
+}

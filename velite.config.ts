@@ -81,6 +81,25 @@ const achievements = defineCollection({
     })),
 })
 
+// Scholarships collection
+const scholarships = defineCollection({
+  name: 'Scholarship',
+  pattern: 'scholarships/**/*.md',
+  schema: s
+    .object({
+      title: s.string(),
+      period: s.string(),
+      amount: s.string().optional(),
+      url: s.string().optional(),
+      order: s.number(),
+      body: s.raw(),
+    })
+    .transform((data) => ({
+      ...data,
+      description: data.body.trim(),
+    })),
+})
+
 // Single files (accounts, academic, career, certifications)
 const accounts = defineCollection({
   name: 'Accounts',
@@ -154,6 +173,7 @@ export default defineConfig({
     activities,
     skills,
     achievements,
+    scholarships,
     accounts,
     academic,
     career,

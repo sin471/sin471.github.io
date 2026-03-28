@@ -14,30 +14,30 @@ import { accountLinks } from '@/data/accounts';
   <MantaRay />
 
   <!-- テキストとリンクは画面下部に固定（エイの上） -->
-  <main class="relative z-10 flex flex-col items-center justify-end h-[calc(100vh-4rem)] pb-16 gap-8 px-6 overflow-hidden">
+  <main class="relative z-10 flex flex-col items-center justify-end h-[calc(100vh-4rem)] pb-8 md:pb-16 gap-4 md:gap-8 px-6 overflow-hidden">
     <div class="text-center space-y-1">
       <h1 class="text-4xl md:text-5xl font-bold text-base-content tracking-tighter">
         sin471
       </h1>
-      <p class="text-base md:text-lg font-bold uppercase tracking-wider text-base-content/60">
+      <p class="text-sm md:text-lg font-bold uppercase tracking-wider text-base-content/60">
         舘 健太朗 / Kentaro Tachi
       </p>
     </div>
 
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm w-full max-w-xl">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3 text-sm w-full max-w-xl">
       {accountLinks.map((link) => (
         <LinkCard link={link} />
       ))}
     </div>
 
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm w-full max-w-xl">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3 text-sm w-full max-w-xl">
       {[
         { label: 'About',    href: '/about'    },
         { label: 'Research', href: '/research' },
         { label: 'Skills',   href: '/skills'   },
         { label: 'Works',    href: '/works'    },
       ].map(({ label, href }) => (
-        <a href={href} class="btn btn-outline font-bold justify-center">{label}</a>
+        <a href={href} class="btn btn-outline btn-sm md:btn-md font-bold justify-center">{label}</a>
       ))}
     </div>
   </main>
