@@ -46,27 +46,33 @@ describe('shouldTriggerShake', () => {
   })
 })
 
+function makeBubble(): HTMLElement {
+  const el = document.createElement('div')
+  const anim = { playbackRate: 1 }
+  el.getAnimations = () => [anim] as unknown as Animation[]
+  return el
+}
+
+function getRate(el: HTMLElement): number {
+  return (el.getAnimations()[0] as unknown as { playbackRate: number }).playbackRate
+}
+
 describe('createShakeController', () => {
   let bubbles: HTMLElement[]
 
   beforeEach(() => {
-    bubbles = [1, 2, 3].map((i) => {
-      const el = document.createElement('div')
-      el.dataset.baseDuration = `${i * 2}s`
-      el.style.setProperty('--bubble-duration', `${i * 2}s`)
-      return el
-    })
+    bubbles = [0, 1, 2].map(() => makeBubble())
   })
 
   afterEach(() => {
     vi.useRealTimers()
   })
 
-  it('シェイク時に全泡の --bubble-duration が FAST_DURATION になる', () => {
+  it('シェイク時に全泡の playbackRate が fastRate になる', () => {
     vi.useFakeTimers()
     const controller = createShakeController(() => bubbles, {
       threshold: 15,
-      fastDuration: '2s',
+      fastRate: 4,
       recoveryMs: 2000,
       debounceMs: 500,
     })
@@ -74,15 +80,15 @@ describe('createShakeController', () => {
     controller.onMotion({ x: 20, y: 0, z: 0 })
 
     for (const el of bubbles) {
-      expect(el.style.getPropertyValue('--bubble-duration')).toBe('2s')
+      expect(getRate(el)).toBe(4)
     }
   })
 
-  it('recoveryMs 後に元の --bubble-duration に戻る', () => {
+  it('recoveryMs 後に全泡の playbackRate が 1 に戻る', () => {
     vi.useFakeTimers()
     const controller = createShakeController(() => bubbles, {
       threshold: 15,
-      fastDuration: '2s',
+      fastRate: 4,
       recoveryMs: 2000,
       debounceMs: 500,
     })
@@ -90,51 +96,78 @@ describe('createShakeController', () => {
     controller.onMotion({ x: 20, y: 0, z: 0 })
     vi.advanceTimersByTime(2000)
 
-    expect(bubbles[0].style.getPropertyValue('--bubble-duration')).toBe('2s')  // data-base-duration
-    expect(bubbles[1].style.getPropertyValue('--bubble-duration')).toBe('4s')
-    expect(bubbles[2].style.getPropertyValue('--bubble-duration')).toBe('6s')
+    for (const el of bubbles) {
+      expect(getRate(el)).toBe(1)
+    }
+  })
+
+  it('振り続ける間は playbackRate が fastRate のまま維持される', () => {
+    vi.useFakeTimers()
+    const controller = createShakeController(() => bubbles, {
+      threshold: 15,
+      fastRate: 4,
+      recoveryMs: 2000,
+      debounceMs: 500,
+    })
+
+    // t=0: 1回目シェイク
+    controller.onMotion({ x: 20, y: 0, z: 0 })
+    expect(getRate(bubbles[0])).toBe(4)
+
+    // t=600: 2回目シェイク（デバウンス後）→ タイマーリセット
+    vi.advanceTimersByTime(600)
+    controller.onMotion({ x: 20, y: 0, z: 0 })
+    expect(getRate(bubbles[0])).toBe(4)
+
+    // t=1800: 1回目タイマーが発火するはずだった時刻を過ぎても fast のまま
+    vi.advanceTimersByTime(1200)
+    expect(getRate(bubbles[0])).toBe(4)
+
+    // t=2600: 2回目タイマー発火 → 1 に戻る
+    vi.advanceTimersByTime(800)
+    expect(getRate(bubbles[0])).toBe(1)
   })
 
   it('debounceMs 以内の連続シェイクは無視される', () => {
     vi.useFakeTimers()
     const controller = createShakeController(() => bubbles, {
       threshold: 15,
-      fastDuration: '2s',
+      fastRate: 4,
       recoveryMs: 2000,
       debounceMs: 500,
     })
 
-    // 1回目シェイク at t=0 → fires, lastShakeTime=0
+    // 1回目シェイク at t=0 → fires
     controller.onMotion({ x: 20, y: 0, z: 0 })
 
-    // 300ms後（デバウンス内: 300 < 500）に2回目シェイク → 無視
+    // 300ms後（デバウンス内）に2回目シェイク → 無視
     vi.advanceTimersByTime(300)
     controller.onMotion({ x: 20, y: 0, z: 0 })
 
-    // バブルは fast のまま（無視されても変化なし）
-    expect(bubbles[1].style.getPropertyValue('--bubble-duration')).toBe('2s')
+    // fast のまま
+    expect(getRate(bubbles[1])).toBe(4)
 
-    // t=2000ms: 1回目の recovery が発火 → base に戻る
+    // t=2000ms: recovery が発火 → 1 に戻る
     vi.advanceTimersByTime(1700)
-    expect(bubbles[1].style.getPropertyValue('--bubble-duration')).toBe('4s')
+    expect(getRate(bubbles[1])).toBe(1)
 
-    // t=2500ms: デバウンス境界を超えた3回目シェイク（2500-0=2500 > 500）→ fires
+    // t=2500ms: デバウンス境界を超えた3回目シェイク → fires
     vi.advanceTimersByTime(500)
     controller.onMotion({ x: 20, y: 0, z: 0 })
-    expect(bubbles[1].style.getPropertyValue('--bubble-duration')).toBe('2s')
+    expect(getRate(bubbles[1])).toBe(4)
   })
 
   it('threshold 未満の motion ではトリガーしない', () => {
     const controller = createShakeController(() => bubbles, {
       threshold: 15,
-      fastDuration: '2s',
+      fastRate: 4,
       recoveryMs: 2000,
       debounceMs: 500,
     })
 
     controller.onMotion({ x: 5, y: 5, z: 0 })
 
-    // 変化なし（元の値のまま）
-    expect(bubbles[1].style.getPropertyValue('--bubble-duration')).toBe('4s')
+    // 変化なし（playbackRate は 1 のまま）
+    expect(getRate(bubbles[1])).toBe(1)
   })
 })

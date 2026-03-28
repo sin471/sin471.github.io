@@ -6,7 +6,7 @@ export type AccelerationInput = {
 
 export type ShakeControllerOptions = {
   threshold: number
-  fastDuration: string
+  fastRate: number
   recoveryMs: number
   debounceMs: number
 }
@@ -23,8 +23,9 @@ export function createShakeController(
   getBubbles: () => HTMLElement[],
   options: ShakeControllerOptions,
 ) {
-  const { threshold, fastDuration, recoveryMs, debounceMs } = options
+  const { threshold, fastRate, recoveryMs, debounceMs } = options
   let lastShakeTime = 0
+  let recoveryTimer: ReturnType<typeof setTimeout> | null = null
 
   return {
     onMotion(acceleration: AccelerationInput): void {
@@ -37,13 +38,19 @@ export function createShakeController(
 
       const bubbles = getBubbles()
       for (const el of bubbles) {
-        el.style.setProperty('--bubble-duration', fastDuration)
+        for (const anim of el.getAnimations()) {
+          anim.playbackRate = fastRate
+        }
       }
 
-      setTimeout(() => {
+      // 振り続けている間はタイマーをリセットし続ける
+      if (recoveryTimer !== null) clearTimeout(recoveryTimer)
+      recoveryTimer = setTimeout(() => {
+        recoveryTimer = null
         for (const el of bubbles) {
-          const base = el.dataset.baseDuration ?? fastDuration
-          el.style.setProperty('--bubble-duration', base)
+          for (const anim of el.getAnimations()) {
+            anim.playbackRate = 1
+          }
         }
       }, recoveryMs)
     },

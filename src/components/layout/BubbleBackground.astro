@@ -32,10 +32,9 @@ const bubbles = Array.from({ length: 20 }, (_, i) => {
 
 <script>
   import { createShakeController } from '@/utils/shake'
-  import { restoreBaseDurations } from '@/utils/bubbles'
 
   const SHAKE_THRESHOLD = 15
-  const FAST_DURATION = '2s'
+  const FAST_RATE = 4
   const RECOVERY_MS = 2000
   const DEBOUNCE_MS = 500
 
@@ -45,7 +44,7 @@ const bubbles = Array.from({ length: 20 }, (_, i) => {
 
     const controller = createShakeController(getBubbles, {
       threshold: SHAKE_THRESHOLD,
-      fastDuration: FAST_DURATION,
+      fastRate: FAST_RATE,
       recoveryMs: RECOVERY_MS,
       debounceMs: DEBOUNCE_MS,
     })

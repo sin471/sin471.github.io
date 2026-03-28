@@ -1,12 +1,15 @@
-export function setAllDurations(elements: HTMLElement[], duration: string): void {
+export function setAllRates(elements: HTMLElement[], rate: number): void {
   for (const el of elements) {
-    el.style.setProperty('--bubble-duration', duration)
+    for (const anim of el.getAnimations()) {
+      anim.playbackRate = rate
+    }
   }
 }
 
-export function restoreBaseDurations(elements: HTMLElement[], fallback = '8s'): void {
+export function restoreRates(elements: HTMLElement[]): void {
   for (const el of elements) {
-    const base = el.dataset.baseDuration ?? fallback
-    el.style.setProperty('--bubble-duration', base)
+    for (const anim of el.getAnimations()) {
+      anim.playbackRate = 1
+    }
   }
 }

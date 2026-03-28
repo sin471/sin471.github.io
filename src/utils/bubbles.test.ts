@@ -1,63 +1,47 @@
-import { describe, it, expect, beforeEach } from 'vitest'
-import { setAllDurations, restoreBaseDurations } from './bubbles'
+import { describe, it, expect } from 'vitest'
+import { setAllRates, restoreRates } from './bubbles'
 
-function makeBubble(baseDuration: string, currentDuration?: string): HTMLElement {
+function makeBubble(initialRate = 1): HTMLElement {
   const el = document.createElement('div')
-  el.classList.add('bubble')
-  el.dataset.baseDuration = baseDuration
-  el.style.setProperty('--bubble-duration', currentDuration ?? baseDuration)
+  const anim = { playbackRate: initialRate }
+  el.getAnimations = () => [anim] as unknown as Animation[]
   return el
 }
 
-describe('setAllDurations', () => {
-  let bubbles: HTMLElement[]
+function getRate(el: HTMLElement): number {
+  return (el.getAnimations()[0] as unknown as { playbackRate: number }).playbackRate
+}
 
-  beforeEach(() => {
-    bubbles = ['4s', '6s', '8s'].map((d) => makeBubble(d))
-  })
-
-  it('全要素の --bubble-duration を指定値に変更する', () => {
-    setAllDurations(bubbles, '2s')
+describe('setAllRates', () => {
+  it('全要素の playbackRate を指定値に変更する', () => {
+    const bubbles = [1, 1, 1].map(() => makeBubble())
+    setAllRates(bubbles, 4)
     for (const el of bubbles) {
-      expect(el.style.getPropertyValue('--bubble-duration')).toBe('2s')
+      expect(getRate(el)).toBe(4)
     }
   })
 
   it('空の配列でもエラーにならない', () => {
-    expect(() => setAllDurations([], '2s')).not.toThrow()
+    expect(() => setAllRates([], 4)).not.toThrow()
   })
 
-  it('data-base-duration は変更しない', () => {
-    setAllDurations(bubbles, '2s')
-    expect(bubbles[0].dataset.baseDuration).toBe('4s')
-    expect(bubbles[1].dataset.baseDuration).toBe('6s')
+  it('アニメーションがない要素はスキップする', () => {
+    const el = document.createElement('div')
+    el.getAnimations = () => []
+    expect(() => setAllRates([el], 4)).not.toThrow()
   })
 })
 
-describe('restoreBaseDurations', () => {
-  let bubbles: HTMLElement[]
-
-  beforeEach(() => {
-    bubbles = ['4s', '6s', '8s'].map((d) => makeBubble(d, '2s'))
-  })
-
-  it('各要素の --bubble-duration を data-base-duration に戻す', () => {
-    restoreBaseDurations(bubbles)
-    expect(bubbles[0].style.getPropertyValue('--bubble-duration')).toBe('4s')
-    expect(bubbles[1].style.getPropertyValue('--bubble-duration')).toBe('6s')
-    expect(bubbles[2].style.getPropertyValue('--bubble-duration')).toBe('8s')
-  })
-
-  it('data-base-duration がない場合はフォールバック値を使う', () => {
-    const el = document.createElement('div')
-    el.style.setProperty('--bubble-duration', '2s')
-    // data-base-duration を意図的に設定しない
-
-    restoreBaseDurations([el], '10s')
-    expect(el.style.getPropertyValue('--bubble-duration')).toBe('10s')
+describe('restoreRates', () => {
+  it('各要素の playbackRate を 1 に戻す', () => {
+    const bubbles = [4, 4, 4].map((r) => makeBubble(r))
+    restoreRates(bubbles)
+    for (const el of bubbles) {
+      expect(getRate(el)).toBe(1)
+    }
   })
 
   it('空の配列でもエラーにならない', () => {
-    expect(() => restoreBaseDurations([])).not.toThrow()
+    expect(() => restoreRates([])).not.toThrow()
   })
 })
