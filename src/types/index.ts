@@ -3,6 +3,8 @@ export interface Profile {
     ja: string;
     en: string;
   };
+  /** 自己紹介（profile.md の本文を HTML 化したもの） */
+  bio: string;
 }
 
 export interface Skill {
@@ -54,6 +56,7 @@ export interface Achievement {
   description: string;
   date?: string;
   url?: string;
+  research?: boolean;
 }
 
 export interface Scholarship {

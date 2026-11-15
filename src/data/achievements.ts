@@ -6,4 +6,8 @@ export const achievements: Achievement[] = veliteAchievements.sort((a, b) => (b.
   description: achievement.description,
   date: achievement.date,
   url: achievement.url,
+  research: achievement.research,
 }));
+
+/** Research ページにも表示する受賞 */
+export const researchAchievements: Achievement[] = achievements.filter(a => a.research);

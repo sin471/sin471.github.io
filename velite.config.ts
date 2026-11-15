@@ -72,6 +72,8 @@ const achievements = defineCollection({
       title: s.string(),
       date: s.string().optional(),
       url: s.string().optional(),
+      /** true にすると Research ページの Awards にも表示する */
+      research: s.boolean().optional(),
       order: s.number(),
       body: s.raw(),
     })
@@ -128,6 +130,7 @@ const profile = defineCollection({
       ja: s.string(),
       en: s.string(),
     }),
+    bio: s.markdown(),
   }),
 })
 
