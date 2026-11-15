@@ -9,7 +9,7 @@ if (publications.length === 0) {
 ---
 
 <section>
-  <SectionHeader icon="article" title="Publications" color="green" />
+  <SectionHeader icon="article" title="Publications & Presentations" color="green" />
   <div class="space-y-10">
     {publicationGroups.map((group) => (
       <div>
@@ -26,7 +26,7 @@ if (publications.length === 0) {
                     </div>
                     {p.award && (
                       <p class="pl-5 mb-1">
-                        <span class="badge badge-accent font-bold gap-1">
+                        <span class="badge badge-accent font-bold gap-1 h-auto min-h-6 py-0.5">
                           <span class="material-symbols-outlined text-base leading-none">emoji_events</span>
                           {p.award}
                         </span>
@@ -34,7 +34,7 @@ if (publications.length === 0) {
                     )}
                     <p class="text-sm text-base-content/80 pl-5">
                       {p.authors.map((author, i) => (
-                        <span><span class:list={['whitespace-nowrap', { 'font-bold underline': author === profile.name.ja }]}>{author}</span>{i < p.authors.length - 1 && ', '}</span>
+                        <span><span class:list={['whitespace-nowrap', { 'font-bold underline': author === profile.name.ja || author === profile.name.en }]}>{author}</span>{i < p.authors.length - 1 && ', '}</span>
                       ))}
                     </p>
                     <p class="text-sm text-base-content pl-5 mt-1">
@@ -42,8 +42,8 @@ if (publications.length === 0) {
                     </p>
                     <div class="flex flex-wrap items-center gap-2 pl-5 mt-2">
                       <span class="text-xs text-base-content/60">{p.date}</span>
-                      <span class="badge badge-sm badge-ghost">{categoryLabels[p.category]}</span>
-                      {p.presentationType && <span class="badge badge-sm badge-ghost">{p.presentationType}</span>}
+                      <span class="badge badge-sm badge-ghost h-auto min-h-5 py-0.5">{categoryLabels[p.category]}</span>
+                      {p.presentationType && <span class="badge badge-sm badge-ghost h-auto min-h-5 py-0.5">{p.presentationType}</span>}
                     </div>
                   </div>
                   {p.url && (
