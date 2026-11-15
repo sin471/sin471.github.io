@@ -3,6 +3,7 @@ import Layout from '@/layouts/Layout.astro';
 import MantaRay from '@/components/ui/MantaRay.astro';
 import LinkCard from '@/components/ui/LinkCard.astro';
 import { accountLinks } from '@/data/accounts';
+import { profile } from '@/data/profile';
 ---
 
 <style is:global>
@@ -20,7 +21,7 @@ import { accountLinks } from '@/data/accounts';
         sin471
       </h1>
       <p class="text-sm md:text-lg font-bold uppercase tracking-wider text-base-content/60">
-        舘 健太朗 / Kentaro Tachi
+        {profile.name.ja} / {profile.name.en}
       </p>
     </div>
 

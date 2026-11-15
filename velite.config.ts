@@ -100,7 +100,37 @@ const scholarships = defineCollection({
     })),
 })
 
-// Single files (accounts, academic, career, certifications)
+// Publications collection
+const publications = defineCollection({
+  name: 'Publication',
+  pattern: 'publications/**/*.md',
+  schema: s.object({
+    title: s.string(),
+    authors: s.array(s.string()),
+    venue: s.string(),
+    category: s.enum(['journal', 'international', 'domestic']),
+    refereed: s.boolean(),
+    date: s.string(),
+    paperId: s.string().optional(),
+    presentationType: s.string().optional(),
+    url: s.string().optional(),
+    award: s.string().optional(),
+  }),
+})
+
+// Single files (profile, accounts, research, career, certifications)
+const profile = defineCollection({
+  name: 'Profile',
+  pattern: 'profile.md',
+  single: true,
+  schema: s.object({
+    name: s.object({
+      ja: s.string(),
+      en: s.string(),
+    }),
+  }),
+})
+
 const accounts = defineCollection({
   name: 'Accounts',
   pattern: 'accounts.md',
@@ -116,18 +146,13 @@ const accounts = defineCollection({
   }),
 })
 
-const academic = defineCollection({
-  name: 'Academic',
-  pattern: 'academic.md',
+const research = defineCollection({
+  name: 'Research',
+  pattern: 'research.md',
   single: true,
   schema: s.object({
-    academic: s.array(
-      s.object({
-        period: s.string(),
-        institution: s.string(),
-        description: s.string(),
-      })
-    ),
+    fields: s.array(s.string()),
+    interests: s.array(s.string()).optional(),
   }),
 })
 
@@ -174,8 +199,10 @@ export default defineConfig({
     skills,
     achievements,
     scholarships,
+    publications,
+    profile,
     accounts,
-    academic,
+    research,
     career,
     certifications,
   },
