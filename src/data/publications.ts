@@ -1,5 +1,6 @@
 import { publications as velitePublications } from '#site/content';
 import { Publication, PublicationCategory } from '@/types';
+import { compareYearMonthDesc } from '@/utils/date';
 
 export const categoryLabels: Record<PublicationCategory, string> = {
   journal: '論文誌',
@@ -9,7 +10,7 @@ export const categoryLabels: Record<PublicationCategory, string> = {
 };
 
 export const publications: Publication[] = velitePublications
-  .sort((a, b) => b.date.localeCompare(a.date))
+  .sort((a, b) => compareYearMonthDesc(a.date, b.date))
   .map(p => ({
     title: p.title,
     authors: p.authors,
