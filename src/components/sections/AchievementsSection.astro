@@ -1,6 +1,14 @@
 ---
 import SectionHeader from '@/components/ui/SectionHeader.astro';
-import { achievements } from '@/data/achievements';
+import { achievements as allAchievements } from '@/data/achievements';
+import type { Achievement } from '@/types';
+
+interface Props {
+  items?: Achievement[];
+  title?: string;
+}
+
+const { items: achievements = allAchievements, title = 'Achievements' } = Astro.props;
 
 if (achievements.length === 0) {
   return;
@@ -8,7 +16,7 @@ if (achievements.length === 0) {
 ---
 
 <section>
-  <SectionHeader icon="emoji_events" title="Achievements" color="green" />
+  <SectionHeader icon="emoji_events" title={title} color="green" />
   <div class="space-y-3">
     {achievements.map((achievement) => (
       <div class="card bg-base-100 border border-base-300 shadow-sm">

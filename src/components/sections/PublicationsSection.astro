@@ -1,0 +1,63 @@
+---
+import SectionHeader from '@/components/ui/SectionHeader.astro';
+import { publications, publicationGroups, categoryLabels } from '@/data/publications';
+import { profile } from '@/data/profile';
+
+if (publications.length === 0) {
+  return;
+}
+---
+
+<section>
+  <SectionHeader icon="article" title="Publications & Presentations" color="green" />
+  <div class="space-y-10">
+    {publicationGroups.map((group) => (
+      <div>
+        <h3 class="text-xs font-mono font-bold tracking-widest text-base-content/60 mb-3">{group.label}</h3>
+        <div class="space-y-3">
+          {group.items.map((p) => (
+            <div class="card bg-base-100 border border-base-300 shadow-sm">
+              <div class="card-body py-4 gap-2">
+                <div class="flex items-start justify-between gap-4">
+                  <div class="flex-1">
+                    <div class="flex items-center gap-3 mb-1">
+                      <div class="w-2 h-2 rounded-full bg-base-content/25 shrink-0"></div>
+                      <h4 class="font-bold text-base-content">{p.title}</h4>
+                    </div>
+                    {p.award && (
+                      <p class="pl-5 mb-1">
+                        <span class="badge badge-accent font-bold gap-1 h-auto min-h-6 py-0.5">
+                          <span class="material-symbols-outlined text-base leading-none">emoji_events</span>
+                          {p.award}
+                        </span>
+                      </p>
+                    )}
+                    <p class="text-sm text-base-content/80 pl-5">
+                      {p.authors.map((author, i) => (
+                        <span><span class:list={['whitespace-nowrap', { 'font-bold underline': author === profile.name.ja || author === profile.name.en }]}>{author}</span>{i < p.authors.length - 1 && ', '}</span>
+                      ))}
+                    </p>
+                    <p class="text-sm text-base-content pl-5 mt-1">
+                      {p.venue}{p.paperId && `, ${p.paperId}`}
+                    </p>
+                    <div class="flex flex-wrap items-center gap-2 pl-5 mt-2">
+                      <span class="text-xs text-base-content/60">{p.date}</span>
+                      <span class="badge badge-sm badge-ghost h-auto min-h-5 py-0.5">{categoryLabels[p.category]}</span>
+                      {p.presentationType && <span class="badge badge-sm badge-ghost h-auto min-h-5 py-0.5">{p.presentationType}</span>}
+                    </div>
+                  </div>
+                  {p.url && (
+                    <a href={p.url} target="_blank" rel="noopener noreferrer"
+                      class="btn btn-ghost btn-xs shrink-0">
+                      <span class="material-symbols-outlined text-sm">open_in_new</span>
+                    </a>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+</section>

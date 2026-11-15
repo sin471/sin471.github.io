@@ -1,6 +1,9 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import ResearchSection from '@/components/sections/ResearchSection.astro';
+import PublicationsSection from '@/components/sections/PublicationsSection.astro';
+import AchievementsSection from '@/components/sections/AchievementsSection.astro';
+import { researchAchievements } from '@/data/achievements';
 import ScholarshipsSection from '@/components/sections/ScholarshipsSection.astro';
 ---
 
@@ -8,6 +11,8 @@ import ScholarshipsSection from '@/components/sections/ScholarshipsSection.astro
   <main class="p-6 md:p-20">
     <div class="max-w-5xl mx-auto space-y-20">
       <ResearchSection />
+      <PublicationsSection />
+      <AchievementsSection items={researchAchievements} title="Awards" />
       <ScholarshipsSection />
     </div>
   </main>

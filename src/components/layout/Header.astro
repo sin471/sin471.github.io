@@ -61,15 +61,22 @@ function isActive(href: string): boolean {
   </div>
 
   <!-- mobile drawer side -->
-  <div class="drawer-side z-[100]">
-    <label for="nav-drawer" aria-label="メニューを閉じる" class="drawer-overlay"></label>
+  <div class="drawer-side z-[100] md:hidden">
+    <!-- 閉じた drawer は visibility:hidden のため label だと Astro audit の a11y-invalid-label に引っかかる。button で代替する -->
+    <button
+      type="button"
+      class="drawer-overlay border-0 p-0"
+      aria-label="メニューを閉じる"
+      onclick="document.getElementById('nav-drawer').checked = false"
+    ></button>
     <div class="menu bg-base-100 min-h-full w-64 p-6 flex flex-col gap-2 font-mono">
-      <a href="/" class="btn btn-ghost justify-start font-bold tracking-widest mb-4">
+      <a href="/" aria-label="sin471" class="btn btn-ghost justify-start font-bold tracking-widest mb-4">
         sin471
       </a>
       {navLinks.map(({ href, label }) => (
         <a
           href={href}
+          aria-label={label}
           class:list={[
             'btn btn-ghost justify-start',
             isActive(href) && 'btn-active font-bold',

@@ -1,9 +1,12 @@
 ---
+import SectionHeader from '@/components/ui/SectionHeader.astro';
+import { profile } from '@/data/profile';
 ---
 
-<section class="space-y-4">
-  <h1 class="text-5xl font-bold text-base-content tracking-tighter">sin471's Portfolio</h1>
-  <p class="color-content font-bold text-xl uppercase tracking-wider">
-    舘 健太朗 / Kentaro Tachi
+<section>
+  <SectionHeader icon="person" title="About" color="slate" />
+  <p class="font-bold text-lg text-base-content mb-4">
+    {profile.name.ja}<span class="text-base-content/50 font-normal text-sm ml-3">{profile.name.en}</span>
   </p>
+  <div class="space-y-3 text-base text-base-content leading-relaxed [&_a]:text-blue-700 [&_a]:underline [&_a]:underline-offset-2 [&_a:hover]:text-blue-900" set:html={profile.bio} />
 </section>

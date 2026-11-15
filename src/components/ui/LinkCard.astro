@@ -1,22 +1,25 @@
 ---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import type { AccountLink } from '@/types';
+import atcoderBlack from '@/assets/images/atcoder-black.png';
 
 interface Props {
   link: AccountLink;
 }
 const { link } = Astro.props;
 
-const iconMap: Record<string, string> = {
+const iconMap: Record<string, ImageMetadata | string> = {
   github: 'https://cdn.simpleicons.org/github/374151',
   x: 'https://cdn.simpleicons.org/x/374151',
   qiita: 'https://cdn.simpleicons.org/qiita/55C500',
   atcoder: 'https://img.atcoder.jp/assets/atcoder-black.png',
-  'atcoder-black': '/images/atcoder-black.png',
+  'atcoder-black': atcoderBlack,
 };
 ---
 
 <a href={link.url} target="_blank" rel="noopener noreferrer"
   class="btn btn-outline gap-2 font-bold justify-center">
-  <img src={iconMap[link.icon]} alt={link.name} class="w-4 h-4 object-contain" />
+  <Image src={iconMap[link.icon]} alt={link.name} width={16} height={16} loading="eager" class="w-4 h-4 object-contain" />
   {link.name}
 </a>

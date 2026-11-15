@@ -1,3 +1,12 @@
+export interface Profile {
+  name: {
+    ja: string;
+    en: string;
+  };
+  /** 自己紹介（profile.md の本文を HTML 化したもの） */
+  bio: string;
+}
+
 export interface Skill {
   name: string;
   icon: string;
@@ -31,10 +40,9 @@ export interface Activity {
   externalUrl?: string;
 }
 
-export interface AcademicInfo {
-  period: string;
-  institution: string;
-  description: string;
+export interface Research {
+  fields: string[];
+  interests?: string[];
 }
 
 export interface CareerInfo {
@@ -48,6 +56,7 @@ export interface Achievement {
   description: string;
   date?: string;
   url?: string;
+  research?: boolean;
 }
 
 export interface Scholarship {
@@ -56,4 +65,20 @@ export interface Scholarship {
   amount?: string;
   description: string;
   url?: string;
+}
+
+export type PublicationCategory = 'journal' | 'international' | 'domestic' | 'other';
+
+export interface Publication {
+  title: string;
+  authors: string[];
+  venue: string;
+  category: PublicationCategory;
+  refereed: boolean;
+  date: string;
+  paperId?: string;
+  presentationType?: string;
+  url?: string;
+  /** 受賞名（例: YANS2026 奨励賞）。カード内で強調表示する */
+  award?: string;
 }
