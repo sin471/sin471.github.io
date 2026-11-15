@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import type { Skill } from '@/types';
 import StarRating from './StarRating.astro';
 
@@ -10,9 +11,12 @@ const { skill } = Astro.props;
 
 <div class="card card-side bg-base-100 border border-base-300 shadow-sm hover:shadow-md transition-all p-4 gap-4">
   <div class="w-12 h-12 shrink-0 bg-base-200 rounded-xl flex items-center justify-center p-2 border border-base-300">
-    <img
+    <Image
       src={`https://cdn.jsdelivr.net/gh/devicons/devicon/icons/${skill.icon}/${skill.icon}-original.svg`}
       alt={skill.name}
+      width={32}
+      height={32}
+      loading="eager"
       class="w-full h-full object-contain"
       onerror="this.src='https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg'"
     />

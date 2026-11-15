@@ -1,5 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import type { Activity } from '@/types';
+import { resolveImage } from '@/utils/images';
 
 interface Props {
   activity: Activity;
@@ -11,7 +13,7 @@ const isAtCoder = activity.title === "AtCoder Rating";
 <div class="card bg-base-100 border border-base-300 shadow-sm hover:shadow-md hover:border-neutral transition-all">
   {activity.imageUrl && (
     <figure class="overflow-hidden h-48 bg-base-200">
-      <img src={activity.imageUrl} alt={activity.title} class="w-full h-full object-cover" />
+      <Image src={resolveImage(activity.imageUrl)} alt={activity.title} width={800} class="w-full h-full object-cover" />
     </figure>
   )}
 
@@ -29,10 +31,12 @@ const isAtCoder = activity.title === "AtCoder Rating";
 
     {isAtCoder ? (
       <a href="https://atcoder.jp/users/sin471" target="_blank" rel="noopener noreferrer">
-        <img
+        <Image
           src="https://img.shields.io/endpoint?url=https%3A%2F%2Fatcoder-badges.now.sh%2Fapi%2Fatcoder%2Fjson%2Fsin471"
           alt="AtCoder Rating"
-          class="h-5"
+          width={120}
+          height={20}
+          class="h-5 w-auto"
         />
       </a>
     ) : activity.subtitle ? (
