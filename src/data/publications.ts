@@ -5,6 +5,7 @@ export const categoryLabels: Record<PublicationCategory, string> = {
   journal: '論文誌',
   international: '国際会議',
   domestic: '国内会議',
+  other: 'その他',
 };
 
 export const publications: Publication[] = velitePublications

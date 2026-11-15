@@ -108,7 +108,7 @@ const publications = defineCollection({
     title: s.string(),
     authors: s.array(s.string()),
     venue: s.string(),
-    category: s.enum(['journal', 'international', 'domestic']),
+    category: s.enum(['journal', 'international', 'domestic', 'other']),
     refereed: s.boolean(),
     date: s.string(),
     paperId: s.string().optional(),

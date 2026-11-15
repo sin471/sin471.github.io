@@ -64,7 +64,7 @@ export interface Scholarship {
   url?: string;
 }
 
-export type PublicationCategory = 'journal' | 'international' | 'domestic';
+export type PublicationCategory = 'journal' | 'international' | 'domestic' | 'other';
 
 export interface Publication {
   title: string;
