@@ -28,6 +28,8 @@ const pathname = Astro.url.pathname;
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <link rel="icon" href="/favicon.ico" />
+    <!-- 深海モード（イースターエッグ）をページ遷移後も維持。描画前に適用してちらつきを防ぐ -->
+    <script is:inline>try{if(sessionStorage.getItem('sin471:deep-sea')==='1')document.documentElement.classList.add('deep-sea')}catch(e){}</script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

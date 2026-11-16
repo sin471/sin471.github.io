@@ -1,81 +1,27 @@
 ---
-// ビルド時に泡の設定を生成（静的HTML）
-const bubbles = Array.from({ length: 20 }, (_, i) => {
-  const duration = 6 + Math.random() * 6   // 6s ~ 12s
-  const delay    = Math.random() * 8        // 0s ~ 8s
-  const drift    = (Math.random() - 0.5) * 60  // -30px ~ +30px
-  const left     = 2 + Math.random() * 96  // 2% ~ 98%
-  const size     = 8 + Math.random() * 32  // 8px ~ 40px
-  return { duration, delay, drift, left, size, id: i }
-})
+// 泡を Canvas で描く全ページ共通の背景レイヤー（挙動は src/scripts/ocean/bubbles.ts）
 ---
 
-<div
-  class="fixed inset-0 pointer-events-none z-0 overflow-hidden"
+<canvas
+  id="bubble-canvas"
+  class="fixed inset-0 pointer-events-none z-0"
   aria-hidden="true"
->
-  {bubbles.map((b) => (
-    <div
-      class="bubble"
-      data-base-duration={`${b.duration.toFixed(1)}s`}
-      style={[
-        `left: ${b.left.toFixed(1)}%`,
-        `width: ${b.size.toFixed(1)}px`,
-        `height: ${b.size.toFixed(1)}px`,
-        `--bubble-duration: ${b.duration.toFixed(1)}s`,
-        `--bubble-delay: ${b.delay.toFixed(1)}s`,
-        `--bubble-drift: ${b.drift.toFixed(1)}px`,
-      ].join('; ')}
-    />
-  ))}
-</div>
+></canvas>
 
 <script>
-  import { createShakeController } from '@/utils/shake'
+  import { startBubbleField } from '@/scripts/ocean/bubbles'
+  import { prefersReducedMotion, toggleDeepSea } from '@/scripts/ocean/shared'
+  import { createSequenceMatcher, KONAMI } from '@/utils/sequence'
 
-  const SHAKE_THRESHOLD = 15
-  const FAST_RATE = 4
-  const RECOVERY_MS = 2000
-  const DEBOUNCE_MS = 500
+  // コナミコマンド → 深海モード（テーマ切替なのでモーション設定に関係なく有効）
+  const konami = createSequenceMatcher(KONAMI, toggleDeepSea)
+  window.addEventListener('keydown', (e) => {
+    if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return
+    konami.push(e.key)
+  })
 
-  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    const getBubbles = (): HTMLElement[] =>
-      Array.from(document.querySelectorAll<HTMLElement>('.bubble'))
-
-    const controller = createShakeController(getBubbles, {
-      threshold: SHAKE_THRESHOLD,
-      fastRate: FAST_RATE,
-      recoveryMs: RECOVERY_MS,
-      debounceMs: DEBOUNCE_MS,
-    })
-
-    async function initMotion() {
-      if (typeof DeviceMotionEvent === 'undefined') return
-
-      const handler = (e: DeviceMotionEvent) => {
-        const a = e.accelerationIncludingGravity
-        if (!a) return
-        controller.onMotion({ x: a.x ?? 0, y: a.y ?? 0, z: a.z ?? 0 })
-      }
-
-      // iOS 13+ requires permission
-      if (typeof (DeviceMotionEvent as unknown as { requestPermission?: () => Promise<string> }).requestPermission === 'function') {
-        document.addEventListener('click', async () => {
-          try {
-            const requestPermission = (DeviceMotionEvent as unknown as { requestPermission: () => Promise<string> }).requestPermission
-            const perm = await requestPermission()
-            if (perm === 'granted') {
-              window.addEventListener('devicemotion', handler)
-            }
-          } catch {
-            // Permission denied or unavailable — degrade silently
-          }
-        }, { once: true })
-      } else {
-        window.addEventListener('devicemotion', handler)
-      }
-    }
-
-    initMotion()
+  const canvas = document.getElementById('bubble-canvas') as HTMLCanvasElement | null
+  if (canvas && !prefersReducedMotion()) {
+    startBubbleField(canvas)
   }
 </script>
