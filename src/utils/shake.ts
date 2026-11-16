@@ -4,11 +4,17 @@ export type AccelerationInput = {
   z: number
 }
 
-export type ShakeControllerOptions = {
+export type ShakeDetectorOptions = {
   threshold: number
-  fastRate: number
   recoveryMs: number
   debounceMs: number
+}
+
+export type ShakeHandlers = {
+  /** シェイクを検知するたびに呼ばれる（デバウンス済み） */
+  onShake: (magnitude: number) => void
+  /** 最後のシェイクから recoveryMs 経過したときに 1 度だけ呼ばれる */
+  onCalm: () => void
 }
 
 export function calculateMagnitude(x: number, y: number, z: number): number {
@@ -19,12 +25,13 @@ export function shouldTriggerShake(magnitude: number, threshold: number): boolea
   return magnitude > threshold
 }
 
-export function createShakeController(
-  getBubbles: () => HTMLElement[],
-  options: ShakeControllerOptions,
-) {
-  const { threshold, fastRate, recoveryMs, debounceMs } = options
-  let lastShakeTime = 0
+/**
+ * 加速度入力からシェイクを検知する。
+ * 描画方式（CSS アニメーション / Canvas）に依存しないよう、結果はコールバックで返す。
+ */
+export function createShakeDetector(handlers: ShakeHandlers, options: ShakeDetectorOptions) {
+  const { threshold, recoveryMs, debounceMs } = options
+  let lastShakeTime = -Infinity
   let recoveryTimer: ReturnType<typeof setTimeout> | null = null
 
   return {
@@ -36,22 +43,13 @@ export function createShakeController(
       if (now - lastShakeTime < debounceMs) return
       lastShakeTime = now
 
-      const bubbles = getBubbles()
-      for (const el of bubbles) {
-        for (const anim of el.getAnimations()) {
-          anim.playbackRate = fastRate
-        }
-      }
+      handlers.onShake(magnitude)
 
       // 振り続けている間はタイマーをリセットし続ける
       if (recoveryTimer !== null) clearTimeout(recoveryTimer)
       recoveryTimer = setTimeout(() => {
         recoveryTimer = null
-        for (const el of bubbles) {
-          for (const anim of el.getAnimations()) {
-            anim.playbackRate = 1
-          }
-        }
+        handlers.onCalm()
       }, recoveryMs)
     },
   }

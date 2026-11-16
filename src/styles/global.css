@@ -41,78 +41,42 @@
 }
 
 /* =============================================
-   Bubble animations
+   Ocean background (canvas は src/scripts/ocean/*)
    ============================================= */
-@keyframes bubble-rise {
-  0% {
-    transform: translateY(0) translateX(0px) scale(0.8);
-    opacity: 0;
-  }
-  10% { opacity: 0.6; }
-  90% { opacity: 0.4; }
-  100% {
-    transform: translateY(-110vh) translateX(var(--bubble-drift, 20px)) scale(1);
-    opacity: 0;
-  }
-}
+html.manta-hover main { cursor: pointer; }
 
-@keyframes bubble-wobble {
-  0%, 100% { border-radius: 50% 50% 50% 50%; }
-  33%       { border-radius: 48% 52% 54% 46%; }
-  66%       { border-radius: 52% 48% 46% 54%; }
-}
-
-.bubble {
+.ocean-toast {
   position: fixed;
-  bottom: -60px;
-  border-radius: 50%;
-  border: 1.5px solid oklch(72% 0.111 230.318 / 0.55);
-  background: oklch(92% 0.02 230 / 0.25);
+  top: 5rem;
+  left: 50%;
+  z-index: 60;
+  transform: translate(-50%, -8px);
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  border: 1px solid oklch(82% 0.111 230.318 / 0.6);
+  background: color-mix(in oklch, var(--color-base-100) 85%, transparent);
+  backdrop-filter: blur(8px);
+  color: var(--color-base-content);
+  font-size: 0.875rem;
+  font-weight: 700;
+  white-space: nowrap;
   pointer-events: none;
-  animation:
-    bubble-rise var(--bubble-duration, 8s) var(--bubble-delay, 0s) ease-in infinite,
-    bubble-wobble 3s ease-in-out infinite;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
+.ocean-toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
 
-@media (prefers-reduced-motion: reduce) {
-  .bubble { animation: none; opacity: 0; }
+/* 深海モード（↑↑↓↓←→←→BA） */
+html.deep-sea[data-theme] {
+  color-scheme: dark;
+  --color-base-100: oklch(24% 0.045 258);
+  --color-base-200: oklch(17% 0.04 260);
+  --color-base-300: oklch(32% 0.05 258);
+  --color-base-content: oklch(93% 0.02 235);
 }
-
-/* =============================================
-   Manta ray animations
-   ============================================= */
-/* 上下左右の有機的なドリフト（Lissajous的） */
-@keyframes manta-drift {
-  0%   { transform: translate(-22vw,  20px) rotate(-6deg); }
-  25%  { transform: translate( -4vw, -55px) rotate( 4deg); }
-  50%  { transform: translate( 20vw,  10px) rotate( 7deg); }
-  75%  { transform: translate(  4vw,  58px) rotate(-3deg); }
-  100% { transform: translate(-22vw,  20px) rotate(-6deg); }
-}
-
-/* 上から見た翼の羽ばたき：翼幅がわずかに収縮 */
-@keyframes wing-spread {
-  0%, 100% { transform: scaleX(1)    scaleY(1); }
-  50%      { transform: scaleX(0.93) scaleY(1.03); }
-}
-
-/* 尾のくねり */
-@keyframes tail-wave {
-  0%   { transform: rotate(-8deg); }
-  50%  { transform: rotate(12deg); }
-  100% { transform: rotate(-8deg); }
-}
-
-@keyframes tail-sway {
-  0%, 100% { transform: rotate(0deg); }
-  50%      { transform: rotate(10deg); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .manta-swim, .manta-bob, .manta-wing, .manta-tail {
-    animation: none;
-  }
-}
+/* 暗い背景でも黒いロゴが見えるように明度だけ反転 */
+html.deep-sea .btn img { filter: invert(1) hue-rotate(180deg); }
+html body { transition: background-color 1.2s ease, color 1.2s ease; }
 
 /* =============================================
    Water shimmer (header top line)
